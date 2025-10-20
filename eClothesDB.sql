@@ -333,6 +333,18 @@ CREATE OR REPLACE VIEW vw_cant_productos_pedido AS
 -- Ejecucion Vista 4:
 -- SELECT * FROM vw_cant_productos_pedido;      
 
+-- Vista 5: Muestra los productos mas vendidos
+CREATE OR REPLACE VIEW vw_productos_mas_vendidos AS
+	SELECT p.id_producto, p.nombre, SUM(d.cantidad_item) AS total_vendido
+	FROM detalle_pedido AS d
+	JOIN producto AS p
+		ON d.id_producto = p.id_producto
+	GROUP BY p.id_producto, p.nombre
+	ORDER BY total_vendido DESC;
+
+-- Ejecucion Vista 5:
+-- SELECT * FROM vw_productos_mas_vendidos;   
+
 -- *******************************************************************
 --             Funciones
 -- *******************************************************************
@@ -461,7 +473,7 @@ DELIMITER $$
 DELIMITER ;
 
 -- INSERT INTO Detalle_Pedido (id_producto, id_pedido, cantidad_item) 
--- VALUES (6, 2, 4);   -- 4 Buzo canguro gris mas al pedido 2
+-- VALUES (6, 2, 4);
 
 -- Trigger 3: Auditoria de cambios en los precios de los productos
 DROP TRIGGER IF EXISTS tr_registrar_precio_after_upd;
